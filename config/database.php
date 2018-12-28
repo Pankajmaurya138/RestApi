@@ -52,7 +52,7 @@ return [
             // 'collation' => 'utf8mb4_unicode_ci',
             'charset' => 'utf8',
             'collation' => 'utf8_unicode_ci',
-            'prefix' => '',
+            'prefix' => 'tbl_',
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,

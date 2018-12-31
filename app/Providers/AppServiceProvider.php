@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
-
+use Laravel\Passport\HasApiTokens;
+use Laravel\Passport\Passport;
+use Illuminate\Support\Facades\Gate;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -11,9 +13,16 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
+
+    protected $policies = [
+        'App\Model' => 'App\Policies\ModelPolicy',
+    ];
+
     public function boot()
     {
-        //
+      
+
+        Passport::routes();
     }
 
     /**
@@ -23,6 +32,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        
     }
 }

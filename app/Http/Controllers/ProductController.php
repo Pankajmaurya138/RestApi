@@ -6,6 +6,7 @@ use App\Model\Product;
 use Illuminate\Http\Request;
 use App\Http\Resources\Product\ProductResource;
 use App\http\Resources\Product\ProductCollection;
+use App\Http\Requests\ProductRequest;
 class ProductController extends Controller
 {
     /**
@@ -13,6 +14,11 @@ class ProductController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     public function __construct()
+     {
+         $this->middleware('auth:api')->except('index','show');
+     }
     public function index()
     {
        return ProductCollection::collection(Product::paginate(20));
@@ -34,9 +40,21 @@ class ProductController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+       $productInfo= new Product();
+       $productInfo->name=$request->name;
+       $productInfo->details=$request->description;
+       $productInfo->stock=$request->stock;
+       $productInfo->discount=$request->discount;
+       $productInfo->price=$request->price;
+
+       $productInfo->save();
+
+       return response([
+           'data'=>new ProductResource($productInfo),
+       ],201);
+       
     }
 
     /**
@@ -70,7 +88,13 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-        //
+       
+        $product['details']=$request->description;
+        $product->update($request->all());
+        return response([
+            'data'=>new ProductResource($product),
+        ],201);
+       
     }
 
     /**
@@ -79,8 +103,13 @@ class ProductController extends Controller
      * @param  \App\Model\Product  $product
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Product $product)
+    public function destroy(Product $product )
     {
-        //
+      
+       $product->delete();
+       return response([
+        'message'=>"Product Deleted Successfully",
+        
+    ],201);
     }
 }

@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Resources\Product\ProductResource;
 use App\http\Resources\Product\ProductCollection;
 use App\Http\Requests\ProductRequest;
+use App\Exceptions\ProductNotBelongsToUser;
+use Auth;
 class ProductController extends Controller
 {
     /**
@@ -88,7 +90,7 @@ class ProductController extends Controller
      */
     public function update(Request $request, Product $product)
     {
-       
+        return $this->ProductUserCheck($product);
         $product['details']=$request->description;
         $product->update($request->all());
         return response([
@@ -105,11 +107,18 @@ class ProductController extends Controller
      */
     public function destroy(Product $product )
     {
-      
+       return  $this->ProductUserCheck($product);
        $product->delete();
        return response([
         'message'=>"Product Deleted Successfully",
         
     ],201);
+    }
+    public function ProductUserCheck($product)
+    {
+            if(Auth::id() != $product->user_id)
+            {
+               throw new ProductNotBelongsToUser;
+            }
     }
 }

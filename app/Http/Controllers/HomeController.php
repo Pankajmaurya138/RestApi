@@ -29,7 +29,20 @@ class HomeController extends Controller
     }
     public function user()
     {
-        return DataTables::of(User::query())->make(true);
+        return DataTables::of(User::query())
+        ->setRowClass(function ($user) {
+            return $user->id % 2 == 0 ? 'alert-primary' : 'alert-success';
+          })
+          ->setRowId('{{$id}}')
+          ->setRowAttr([
+            'align' => 'center',
+        ])
+        ->setRowData([ //set the data row with prefix row-
+            
+            'data-name' => 'row-{{$name}}',
+        ])
+          
+        ->make(true);
        
     }
 }

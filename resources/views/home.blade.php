@@ -17,13 +17,13 @@ Email:<input type="text" name="email" id="email" class="form-control"><br>
         <div class="col-md-12">
         <div class="card">
             <div class="card-header">Dashboard</div>
-                <table class="table" id="myTable">
+                <table class="table myTable" id="myTable">
                     <thead>
                         <tr>
                             <th>Id</th>
                             <th>Name</th>
                             <th>Email</th>
-                            <th>Intro</th>
+                            {{--  <th>Intro</th>  --}}
                             <th>Created At</th>
                             <th>Updated At</th>
                         </tr>
@@ -40,28 +40,36 @@ Email:<input type="text" name="email" id="email" class="form-control"><br>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js">
 </script> 
 <script type="text/javascript" src="https://cdn.datatables.net/v/dt/dt-1.10.18/datatables.min.js"></script>
-
-  
-
-<script >
-    
-   
-
+<script type="textscript">
     $(function() {
-        $('#myTable').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: '{!! route('user') !!}',
-            columns: [
-                { data: 'id', name: 'id' },
-                { data: 'DT_RowData.data-name', name: 'name' },//modified the data row//
-                { data: 'email', name: 'email' },
-                { data: 'intro', name: 'intro' },
-                { data: 'created_at', name: 'created_at' },
-                { data: 'updated_at', name: 'updated_at' }
-            ]
-        });
+ 
+    var oTable = $('.mytable').DataTable({debugger;
+        
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{!!route('user1')!!}',
+            data: function (d) {
+                d.name = $('#name').val();
+                d.email = $('#email').val();
+                
+            }
+        },
+        alert();
+        columns: [
+            {data: 'id', name: 'id'},
+            {data: 'name', name: 'name'},
+            {data: 'email', name: 'email'},
+            {data: 'created_at', name: 'created_at'},
+            {data: 'updated_at', name: 'updated_at'}
+        ]
     });
+   
+    $('#search-form').on('submit', function(e) {
+        oTable.draw();
+        
+    });
+});
 </script>
 
 @endpush

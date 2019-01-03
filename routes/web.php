@@ -1,5 +1,5 @@
 <?php
-
+use App\DataTables\UserDataTable;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -11,8 +11,8 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', function (UserDataTable $dataTable) {
+    return $dataTable->render('index');
 });
 
 Auth::routes();
